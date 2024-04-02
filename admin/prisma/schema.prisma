@@ -1,0 +1,30 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model User {
+  id       String @id @unique @default(uuid())
+  name     String
+  email    String
+  password String
+
+  products Product[]
+
+  @@map("users")
+}
+
+model Product {
+  id     String @id @unique @default(uuid())
+  name   String
+  price  Float
+  userId String
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("products")
+}
